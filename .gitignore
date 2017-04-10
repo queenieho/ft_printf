@@ -1,0 +1,14 @@
+*.pdf
+*.o
+a.out
+test.c
+/zOLD/**
+/libarr/**
+/Test results/**
+
+ft_changecase.c
+ft_itoa_base.c
+functions.c
+main.c
+my_printf
+libarr
