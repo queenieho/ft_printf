@@ -1,14 +1,13 @@
 *.pdf
 *.o
-a.out
-test.c
-/zOLD/**
-/libarr/**
-/Test results/**
+*.a
 
-ft_changecase.c
-ft_itoa_base.c
-functions.c
-main.c
+a.out
+
+/other/**
+/obj/**
+
 my_printf
-libarr
+
+main.c
+test.c

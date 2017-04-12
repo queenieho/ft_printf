@@ -6,44 +6,48 @@
 #    By: qho <qho@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 13:42:02 by qho               #+#    #+#              #
-#    Updated: 2017/03/09 14:23:53 by qho              ###   ########.fr        #
+#    Updated: 2017/04/11 22:39:33 by qho              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC =		gcc
+NAME	=	libftprintf.a
+EXE		=	my_printf
 
-CFLAGS =	-Wall -Wextra -Werror
+# Flags and compiler
+CC		=	gcc
+CFLAGS	=	-Wall -Wextra -Werror
 
-NAME =		my_printf
+# Source and header files, and directory
+INC		=	./inc/
+SRCDIR 	=	./src/
+SRC		=	$(shell ls src | grep -E ".+\.c")
 
-LIB =		ft_printf.a
-
-
-INCLUDE =	include/
-
-SRC = 		ft_printf.c	ft_itoa_base.c ft_changecase.c
-
-OBJ =		$(SRC:.c=.o)
+# Object directory and files
+OBJDIR	=	./obj/
+OBJ	=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
 .PHONY: clean fclean re norm
 
-all: $(NAME)
+all: $(OBJDIR) $(NAME)
 
-$(NAME): $(LIB)
-	@$(CC) $(CFLAGS) -o $(NAME) main.c $(LIB) -I $(INCLUDE)
-	@echo "\033[32mmy_printf made\033[0m"
+# Making directory for object files
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
-$(LIB):		$(OBJ)
-	@ar rc $(LIB) $(OBJ)
-	@ranlib	$(LIB)
-	@echo "\033[32mft_printf.a made\033[0m"
-
-$(OBJ):		$(SRC)
-	@$(CC) -c $(CFLAGS) $(SRC) -I $(INCLUDE)
+$(OBJDIR)%.o:$(SRCDIR)%.c
+	$(CC) $(CFLAGS) -I$(INC) -o $@ -c $<
 	@echo "\033[32mObject files made\033[0m"
 
+$(NAME): $(OBJ)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib	$(NAME)
+	@echo "\033[32mft_printf.a made\033[0m"
+
+test: $(NAME)
+	@$(CC) $(CFLAGS) -I$(INC) $(NAME) main.c -o $(EXE)
+
 norm:
-	@norminette $(SRC) main.c $(INCLUDE)
+	@norminette $(SRC) $(INC)
 
 clean:
 	@/bin/rm -f $(OBJ)

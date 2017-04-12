@@ -6,108 +6,11 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/12 23:52:06 by qho               #+#    #+#             */
-/*   Updated: 2017/04/07 00:06:40 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/11 22:32:24 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ft_printf.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <limits.h>
-#include <wchar.h>
-#include <locale.h>
-
-
-# define CONV "diouxXDOUcCsSp"
-# define FLAGS "#0-+ "
-# define BASE "0123456789ABCDEF"
-// # define LM ""hh" "h" "l" "ll" "j" "z""
-
-typedef struct	s_flags
-{
-	int		hash;
-	int		zero;
-	int		minus;
-	int		plus;
-	int		space;
-	int		fw_ast;
-	int		f_width;
-	int		p_ast;
-	int		precision;
-	int		lm;
-	char	conv;
-	int		conv_i;
-	int		neg;
-}				t_flags;
-
-typedef struct	s_data
-{
-	long long	nb;
-	char		c;
-	wchar_t		w_chr;
-	char		*str;
-	wchar_t		*w_str;
-	void		*ptr; 
-}				t_data;
-
-void	ft_putchar(char c);
-void	ft_putstr(char const *s);
-void	ft_putnbr(long long nb);
-
-void	ft_putwchar(wchar_t c);
-void	ft_putwstr(wchar_t *str);
-
-void	ft_putflags(t_flags flag);
-void	ft_putendl(char const *s);
-
-void	ft_error(char *str);
-
-char	*ft_strcpy(char *dst, const char *src);
-char	*ft_strdup(const char *s1);
-void	ft_strdel(char **str);
-int		ft_strcmp(const char *s1, const char *s2);
-char	*ft_strncpy(char *dst, char const *src, size_t len);
-int		ft_strlen(const char *s);
-void	ft_bzero(void *s, size_t n);
-int		ft_atoi(const char *str);
-
-/*
-** 		parse functions
-*/
-
-int		ft_parseflags(char *str, t_flags *flag);
-int		ft_getwidth(char **str, t_flags *flag);
-int		ft_getpres(char **str, t_flags *flag);
-int		ft_parsenums(char **str, t_flags *flag);
-int		ft_parseconv(char c);
-int		ft_parselenmod(char **str, t_flags *flag);
-int		ft_parse(char *str, t_flags *flag);
-int		ft_clen(char *str); //conversion lenght?
-
-void	ft_checkflags(t_flags *flag);
-
-char	*ft_makewide(char *str, int width, int left);
-char	*ft_makepres(char *str, int pres);
-
-void	ft_getdata(t_flags *flag, va_list *arg, t_data *data);
-
-int		ft_tolower(int c);
-char	*ft_changecase(char *str);
-int		ft_countspace(char *str);
-char	ft_addsign(t_flags *flag, int neg);
-char	*ft_modnum(char *str, t_flags *flag, int neg);
-
-char	*ft_make_num(t_flags *flag, unsigned long long nb);
-char	*ft_itoa_base(unsigned long long value, int base);
-
-char	*ft_make_c(t_flags *flag, int c);
-
-char	*ft_makepres_s(char *str, int pres);
-char	*ft_make_s(t_flags *flag, char *str);
-
-int		ft_printf(const char * restrict format, ...);
+#include "ft_printf.h"
 
 /*
 ** All the writing functions here
@@ -720,17 +623,15 @@ int		ft_countspace(char *str)
 
 char	ft_addsign(t_flags *flag, int neg)
 {
-	char	ret;
-
 	if (neg)
-		ret = '-';
+		return ('-');
 	else if (flag->plus && !neg)
-		ret = '+';
+		return ('+');
 	else if (flag->space && !neg)
-		ret = ' ';
+		return (' ');
 	else if (flag->hash)
-		ret = '0';
-	return (ret);
+		return ('0');
+	return (0);
 }
 
 char	*ft_modnum(char *str, t_flags *flag, int neg)
@@ -884,29 +785,18 @@ char	*ft_itoa_base(unsigned long long value, int base)
 	char *s;
 	int i;
 	int size;
-	int neg;
+	// int neg;
 
 	i = 0;
-	neg = 0;
+	// neg = 0;
 	if (value == 0)
 	{
 		s = (char *) malloc(sizeof(char) * 2);
 		s = "0";
 	}
-	else if (value == -2147483648 && base == 10)
-	{
-		s = (char *)malloc(sizeof(char) * 12);
-		s = "-2147483648";
-	}
 	else
 	{
-		if (value < 0)
-		{
-			if (base == 10)
-				neg = 1;
-			value = -value;
-		}
-		size = val_size(value, base) + neg;
+		size = val_size(value, base);
 		s = (char *)malloc(sizeof(char) * (size + 1));
 		i = size - 1;
 		while (value)
@@ -915,8 +805,6 @@ char	*ft_itoa_base(unsigned long long value, int base)
 			i--;
 			value /= base;
 		}
-		if (neg)
-			s[0] = '-';
 		s[size] = '\0';
 	}
 	return (s);
@@ -1035,9 +923,81 @@ char	*ft_make_s(t_flags *flag, char *str)
 }
 
 
-/*
+/* ***************************** *\
 ** Making w_string from w_char!
+\* ***************************** */
+
+
+/*
+** Applying width to w_char
 */
+
+int ft_wchar_len(wchar_t c)
+{
+	if (c <= 0x7F)
+		return (1);
+	else if (c <= 0x7FF)
+		return (2);
+	else if (c <= 0xFFFF)
+		return (3);
+	else
+		return (4);
+}
+
+
+int	ft_wstr_len(const wchar_t *ws)
+{
+	unsigned int i;
+
+	i = 0;
+	while (*ws)
+	{
+		i += (ft_wchar_len(*ws));
+		ws++;
+	}
+	return (i);
+}
+
+wchar_t	*ft_makewide_ws(wchar_t *str, int width, int left)
+{
+	wchar_t	*ret;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	// ft_putendl("making wide string");
+	if (width > ft_wstr_len(str))
+	{
+		ret = (wchar_t *)malloc(sizeof(wchar_t) * (width + 1));
+		if (left)
+		{
+			while (str[j])
+				ret[i++] = str[j++];
+			while (i < width)
+				ret[i++] = ' ';
+			ret[i] = '\0';
+		}
+		else
+		{
+			while (i < (width - ft_wstr_len(str)))
+				ret[i++] = ' ';
+			while (str[j])
+				ret[i++] = str[j++];
+			ret[i] = '\0';
+		}
+	}
+	else
+	{
+		ret = (wchar_t *)malloc(sizeof(wchar_t) * (ft_wstr_len(str) + 1));
+		while (str[j])
+			ret[i++] = str[j++];
+		ret[i] = '\0';
+	}
+	// free(str);
+	return (ret);
+}
+
 
 wchar_t	*ft_make_wc(t_flags *flag, int c)
 {
@@ -1046,6 +1006,8 @@ wchar_t	*ft_make_wc(t_flags *flag, int c)
 
 	n_cnt = 0;
 	ft_checkflags(flag);
+
+	// ft_putendl("making wide char");
 
 	// REMEMBER TO COUNT +1 WHEN IT'S A NULL W_CHAR
 	if (c)
@@ -1061,9 +1023,97 @@ wchar_t	*ft_make_wc(t_flags *flag, int c)
 		n_cnt = 1;
 	}
 	if (flag->f_width)
-		ret = ft_makewide(ret, flag->f_width - n_cnt, flag->minus);
+		ret = ft_makewide_ws(ret, flag->f_width - n_cnt, flag->minus);
 	return (ret);
 }
+
+
+/*
+** Making wstring from wstring!
+*/
+
+wchar_t	*ft_makepres_ws(wchar_t *str, int pres)
+{
+	wchar_t	*ret;
+	int		i;
+	int		len;
+
+	i = 0;
+	len = 0;
+	if (pres < ft_wstr_len(str))
+	{
+		ret = (wchar_t *)malloc(sizeof(wchar_t) * (pres + 1));
+		while (len < pres)
+		{
+			ret[i] = str[i];
+			len += ft_wchar_len(ret[i]);
+			i++;
+		}
+		ret[i] = '\0';
+	}
+	else
+	{
+		ret = (wchar_t *)malloc(sizeof(wchar_t) * (ft_wstr_len(str) + 1));
+		while (str[++i])
+			ret[i] = str[i];
+		ret[i] = '\0';
+	}
+	// ft_strdel(&str);
+	return (ret);
+}
+
+wchar_t	*ft_make_wstr(t_flags *flag, wchar_t *str)
+{
+	wchar_t *ret;
+
+	// ft_putendl("strings");
+	// ret = (wchar_t *)malloc(sizeof(wchar_t) * (ft_strlen(str) + 1));
+	// ret = ft_strncpy(ret, str, (ft_strlen(str) + 1));
+	ret = str;
+	ft_checkflags(flag);
+	if (flag->precision)
+		ret = ft_makepres_ws(ret, flag->precision);
+	if (flag->f_width)
+		ret = ft_makewide_ws(ret, flag->f_width, flag->minus);
+	return (ret);
+}
+
+
+/*
+** Making string from void *
+*/
+
+char	*ft_addhex(char *str)
+{
+	char	*ret;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 3));
+	ret[i++] = '0';
+	ret[i++] = 'X';
+	while (j < ft_strlen(str))
+		ret[i++] = str[j++];
+	ret[i] = '\0';
+	ft_strdel(&str);
+	return (ret);
+}
+
+char	*ft_make_ptr(void *nb)
+{
+	char			*ret;
+	unsigned long	num;
+
+	num = (unsigned long)nb;
+
+	ret = ft_itoa_base(num, 16);
+	ret = ft_addhex(ret);
+	ret = ft_changecase(ret);
+	return (ret);
+}
+
 
 
 /* ********************************* **
@@ -1072,10 +1122,8 @@ wchar_t	*ft_make_wc(t_flags *flag, int c)
 
 void	ft_getdata(t_flags *flag, va_list *arg, t_data *data)
 {
-	// ft_putendl("getting data?");
 	if ((flag->conv_i >= 0 && flag->conv_i <= 1) || (flag->conv_i >= 2 && flag->conv_i <= 5 && flag->lm == 0))
 	{
-
 		data->nb = va_arg(*arg, int);
 		if (data->nb < 0 && (flag->conv == 'd' || flag->conv == 'D' || flag->conv == 'i'))
 		{
@@ -1089,13 +1137,13 @@ void	ft_getdata(t_flags *flag, va_list *arg, t_data *data)
 
 	else if ((flag->conv_i >= 2 && flag->conv_i <= 5) && flag->lm == 1)
 	{
-		data->nb = va_arg(*arg, short);
+		data->nb = va_arg(*arg, int);
 		if (data->nb < 0)
 			data->nb = UCHAR_MAX + data->nb + 1;
 	}
 	else if ((flag->conv_i >= 2 && flag->conv_i <= 5) && flag->lm == 2)
 	{
-		data->nb = va_arg(*arg, short);
+		data->nb = va_arg(*arg, int);
 		if (data->nb < 0)
 			data->nb = USHRT_MAX + data->nb + 1;
 	}
@@ -1128,7 +1176,6 @@ void	ft_getdata(t_flags *flag, va_list *arg, t_data *data)
 		data->c = va_arg(*arg, int);
 	else if ((flag->conv_i == 10 && flag->lm == 0) || (flag->conv_i == 9 && flag->lm == 3))
 		data->w_chr = va_arg(*arg, wchar_t);			
-
 	else if (flag->conv_i == 11 && flag->lm == 0)
 		data->str = va_arg(*arg, char*);
 	else if ((flag->conv_i == 12 && flag->lm == 0) || (flag->conv_i == 11 && flag->lm == 3))
@@ -1151,6 +1198,7 @@ int	ft_printf(const char * restrict format, ...)
 	// ft_putstr("\n\n*** ft_printf ***\n");
 	tmp = (char *)format;
 	va_start(arg, format);
+	i = 0;
 	while (*tmp)
 	{
 		// ft_putstr("tmp here?\n");
@@ -1190,31 +1238,21 @@ int	ft_printf(const char * restrict format, ...)
 
 				if (flag.conv_i >= 0 && flag.conv_i <= 5)
 					ft_putstr(ft_make_num(&flag, data.nb));
-
 				else if (flag.conv_i == 9 && flag.lm == 0)
 					ft_putstr(ft_make_c(&flag, data.c));
 				else if ((flag.conv_i == 10 && flag.lm == 0) || (flag.conv_i == 9 && flag.lm == 3))
-				{
-					// Pass wchar
-					// ft_putwstr(ft_make_wc(&flag, data.w_chr));
-					ft_putwchar(data.w_chr);
-				}
-
+					ft_putwstr(ft_make_wc(&flag, data.w_chr));
 				else if (flag.conv_i == 11 && flag.lm == 0)
 					ft_putstr(ft_make_s(&flag, data.str));
 				else if ((flag.conv_i == 12 && flag.lm == 0) || (flag.conv_i == 11 && flag.lm == 3))
-				{
-					// Pass wchar *
-					// FIXXXXX
-					// ft_putendl("wchar?");
-					ft_putwstr(data.w_str);
-				}
-
+					ft_putwstr(ft_make_wstr(&flag, data.w_str));
 				else if (flag.conv_i == 13)
 				{
 					// Pass void *
-					ft_putendl("void");
-					ft_putchar(flag.conv);
+					// ft_putendl("void");
+					// ft_putchar(flag.conv);
+					// ft_putnbr(data.ptr);
+					ft_putstr(ft_make_ptr(data.ptr));
 				}
 				else
 					ft_putendl("else?");
@@ -1230,139 +1268,4 @@ int	ft_printf(const char * restrict format, ...)
 	}
 	va_end(arg);
 	return (i);
-}
-
-
-int main()
-{
-	setlocale(LC_ALL, "en_US.UTF-8");
-
-	// printf("%d\n", printf("|%ls|\n", L"óñˆåê"));
-	// printf("|%ls|\n", L"óñˆåê");
-	// ft_printf("my printf: |%ls|\n", L"óñˆåê");
-
-	printf("   printf: |%jd|\n", -42);
-	ft_printf("my printf: |%jd|\n\n", -42);
-	printf("   printf: |%jd|\n", 42);
-	ft_printf("my printf: |%jd|\n\n", 42);
-
-	printf("   printf: |%jx|\n", -42);
-	ft_printf("my printf: |%jx|\n\n", -42);
-	printf("   printf: |%jx|\n", 42);
-	ft_printf("my printf: |%jx|\n\n", 42);
-
-	printf("   printf: |%ju|\n", -42);
-	ft_printf("my printf: |%ju|\n\n", -42);
-	printf("   printf: |%ju|\n", 42);
-	ft_printf("my printf: |%ju|\n\n", 42);
-
-	printf("   printf: |%jo|\n", -42);
-	ft_printf("my printf: |%jo|\n\n", -42);
-	printf("   printf: |%jo|\n", 42);
-	ft_printf("my printf: |%jo|\n\n", 42);
-
-	// ft_putwstr(L"óñˆåê");
-
-	// printf("%d\n", printf("|%s|\n", "test?"));
-	// ft_printf("my printf: |%s|\n", "test?");
-
-
-
-
-	// ft_printf("01 -- %#0-+ *.*lldwhut %#0-+ 50.*o\n", 5);
-
-	// ft_printf("01 -- %% %#+ *.*ld hello world\n", 10, 5, 4294967296);
-	// ft_putstr("\n\n\n");
-
-
-	// ft_printf("01 -- %#0-+ *.*s hello world\n", 5, 3, "test01");
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %#0+ *.*s hello world\n", 5, 3, "test01");
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %#0-+ *.*s hello world\n", 5, 8, "test01");
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %#0+ *.*s hello world\n", 5, 8, "test01");
-	// ft_putstr("\n\n\n");
-
-
-
-	// ft_printf("01 -- |%#0-+ *.*llc| hello world\n", 10, 5, '\0');
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- |%#0+ *.*llc| hello world\n", 10, 5, 'z');
-	// ft_putstr("\n\n\n");
-
-
-	// printf("   printf: |%d|\n", -42);
-	// ft_printf("my printf: |%d|\n", -42);
-
-	// printf("   printf: |%d|\n", 42);
-	// ft_printf("my printf: |%d|\n", 42);
-
-
-
-	// ft_printf("01 -- %% %#+ *.*hhx hello world\n", 10, 5, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#+ *.*hhx hello world\n", 10, 5, 15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0-+ *.*hd hello world\n", 10, 5, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0-+ *.*hd hello world\n", 10, 5, 15);
-	// ft_putstr("\n\n\n");
-
-
-	// ft_printf("01 -- %% %#0+ *.*lld hello world\n", 10, 5, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+ *.*lld hello world\n", 10, 5, 15);
-	// ft_putstr("\n\n\n");
-
-
-
-	// ft_printf("01 -- %% %#0-+ *lld hello world\n", 10, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0-+ *lld hello world\n", 10, 15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+ *.*lld hello world\n", 10, 5, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+ *.*lld hello world\n", 10, 5, 15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+ *llx hello world\n", 10, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+ *llx hello world\n", 10, 15);
-	// ft_putstr("\n\n\n");
-
-
-	// ft_printf("01 -- %% %#0+.*lld hello world\n", 5, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+.*lld hello world\n", 5, 15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+.*lld hello world\n", 1, -15);
-	// ft_putstr("\n\n\n");
-
-	// ft_printf("01 -- %% %#0+.*lld hello world\n", 1, 15);
-	ft_putstr("\n\n\n");
-	// ft_printf("01 -- %% %#0-+ *.*lld hello %#-+ 10.*o world\n", 5, 10, 15, 5, 25);
-	// ft_printf("02 -- %#0-+ 50.*o\n", 5);
-	// ft_printf("03 -- %#0-+ *50.*lld\n", 5);
-	// ft_printf("Hello %- *.10ld   %- 3.2lls World\n", 5, 5, "hi");
-	// ft_printf("Hello %*.10ld   %3.2lls World\n", 5, "hi");
-	// ft_printf("Test 2 %*.10ld   %-x 3.2lls World\n", 5, "hi");
-
-	// printf("%s\n", FLAGS);
-	// printf("%c\n", FLAGS[3]);
-	return (0);
 }
