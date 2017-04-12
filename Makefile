@@ -6,7 +6,7 @@
 #    By: qho <qho@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 13:42:02 by qho               #+#    #+#              #
-#    Updated: 2017/04/11 22:39:33 by qho              ###   ########.fr        #
+#    Updated: 2017/04/11 22:51:18 by qho              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,10 @@ all: $(OBJDIR) $(NAME)
 
 # Making directory for object files
 $(OBJDIR):
-	mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)
 
 $(OBJDIR)%.o:$(SRCDIR)%.c
-	$(CC) $(CFLAGS) -I$(INC) -o $@ -c $<
+	@$(CC) $(CFLAGS) -I$(INC) -o $@ -c $<
 	@echo "\033[32mObject files made\033[0m"
 
 $(NAME): $(OBJ)
@@ -50,7 +50,7 @@ norm:
 	@norminette $(SRC) $(INC)
 
 clean:
-	@/bin/rm -f $(OBJ)
+	@/bin/rm -rf $(OBJDIR)
 	@echo "\033[31mCleaning object files\033[0m"
 
 fclean: clean

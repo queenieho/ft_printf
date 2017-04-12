@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/12 23:52:06 by qho               #+#    #+#             */
-/*   Updated: 2017/04/11 22:32:24 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/11 22:44:32 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1134,7 +1134,6 @@ void	ft_getdata(t_flags *flag, va_list *arg, t_data *data)
 		if (flag->conv_i >= 2 && data->nb < 0)
 			data->nb = UINT_MAX + data->nb + 1;
 	}
-
 	else if ((flag->conv_i >= 2 && flag->conv_i <= 5) && flag->lm == 1)
 	{
 		data->nb = va_arg(*arg, int);
@@ -1171,7 +1170,6 @@ void	ft_getdata(t_flags *flag, va_list *arg, t_data *data)
 		if (data->nb < 0)
 			data->nb = SIZE_MAX + data->nb + 1;
 	}
-
 	else if (flag->conv_i == 9 && flag->lm == 0)
 		data->c = va_arg(*arg, int);
 	else if ((flag->conv_i == 10 && flag->lm == 0) || (flag->conv_i == 9 && flag->lm == 3))
@@ -1184,88 +1182,3 @@ void	ft_getdata(t_flags *flag, va_list *arg, t_data *data)
 		data->ptr = va_arg(*arg, void*);
 }
 
-
-int	ft_printf(const char * restrict format, ...)
-{
-	int			i;
-	char		*found;
-	char		*conv;
-	char 		*tmp;
-	va_list		arg;
-	t_flags		flag;
-	t_data		data;
-
-	// ft_putstr("\n\n*** ft_printf ***\n");
-	tmp = (char *)format;
-	va_start(arg, format);
-	i = 0;
-	while (*tmp)
-	{
-		// ft_putstr("tmp here?\n");
-		if (*tmp != '%')
-			ft_putchar(*tmp);
-		else if (*tmp == '%')
-		{
-			found = tmp;
-			tmp++;
-			if (*tmp == '%')
-				ft_putchar(*tmp);
-			else
-			{
-				conv = (char *)malloc(sizeof(char) * ft_clen(tmp) + 1);
-				conv = ft_strncpy(conv, tmp, ft_clen(tmp));
-				conv[ft_clen(tmp)] = '\0';
-				// ft_putstr("\nconv: |");
-				// ft_putstr(conv);
-				// ft_putstr("|\n");
-
-				ft_bzero(&flag, sizeof(t_flags));
-				ft_bzero(&data, sizeof(t_data));
-				// ft_putchar('\n');
-				if (ft_parse(conv, &flag) == -1)
-					return (-1);
-				if (flag.fw_ast)
-				{
-					flag.f_width = va_arg(arg, int);
-					flag.fw_ast = 0;
-				}
-				if (flag.p_ast)
-				{
-					flag.precision = va_arg(arg, int);
-					flag.p_ast = 0;
-				}
-				ft_getdata(&flag, &arg, &data);
-
-				if (flag.conv_i >= 0 && flag.conv_i <= 5)
-					ft_putstr(ft_make_num(&flag, data.nb));
-				else if (flag.conv_i == 9 && flag.lm == 0)
-					ft_putstr(ft_make_c(&flag, data.c));
-				else if ((flag.conv_i == 10 && flag.lm == 0) || (flag.conv_i == 9 && flag.lm == 3))
-					ft_putwstr(ft_make_wc(&flag, data.w_chr));
-				else if (flag.conv_i == 11 && flag.lm == 0)
-					ft_putstr(ft_make_s(&flag, data.str));
-				else if ((flag.conv_i == 12 && flag.lm == 0) || (flag.conv_i == 11 && flag.lm == 3))
-					ft_putwstr(ft_make_wstr(&flag, data.w_str));
-				else if (flag.conv_i == 13)
-				{
-					// Pass void *
-					// ft_putendl("void");
-					// ft_putchar(flag.conv);
-					// ft_putnbr(data.ptr);
-					ft_putstr(ft_make_ptr(data.ptr));
-				}
-				else
-					ft_putendl("else?");
-				// ft_putstr("*** parsed ***\n");
-				// ft_putflags(flag);
-				tmp += (ft_clen(tmp) - 1);
-				free(conv);
-				conv = NULL;
-			}
-		}
-		// ft_parse(conv);
-		tmp++;
-	}
-	va_end(arg);
-	return (i);
-}
