@@ -6,7 +6,7 @@
 #    By: qho <qho@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 13:42:02 by qho               #+#    #+#              #
-#    Updated: 2017/04/11 22:51:18 by qho              ###   ########.fr        #
+#    Updated: 2017/04/13 09:11:04 by qho              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ $(NAME): $(OBJ)
 	@echo "\033[32mft_printf.a made\033[0m"
 
 test: $(NAME)
-	@$(CC) $(CFLAGS) -I$(INC) $(NAME) main.c -o $(EXE)
+	@$(CC) -Wformat-extra-args -I$(INC) $(NAME) main.c -o $(EXE)
 
 norm:
 	@norminette $(SRC) $(INC)
