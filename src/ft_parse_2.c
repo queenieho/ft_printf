@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:56:50 by qho               #+#    #+#             */
-/*   Updated: 2017/04/12 16:26:06 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 16:14:32 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,23 @@ int	ft_getpres(char **str, t_flags *flag)
 
 	tmp = *str;
 	tmp++;
+	// ft_putchar(flag->conv);
+	if ((flag->conv == 'x' || flag->conv == 'X' || flag->conv == 'o' ||
+		flag->conv == 'O' || flag->conv == 'd') && (*tmp != '*' ||
+		(*tmp < '0' && *tmp > '9')))
+		flag->x_pres = 1;
 	while (*tmp == '*' || (*tmp >= '0' && *tmp <= '9'))
 	{
 		if (*tmp == '*')
-		{
-			if (flag->p_ast || flag->precision)
-				return (-1);
+		// {
+		// 	if (flag->p_ast || flag->precision)
+		// 		return (-1);
 			flag->p_ast = 1;
-		}
+		// }
 		else if (*tmp >= '0' && *tmp <= '9')
 		{
-			if (flag->p_ast || flag->precision)
-				return (-1);
+			// if (flag->p_ast || flag->precision)
+			// 	return (-1);
 			flag->precision = ft_atoi(tmp);
 			while (*tmp >= '0' && *tmp <= '9')
 				tmp++;
@@ -91,6 +96,7 @@ int	ft_getpres(char **str, t_flags *flag)
 		tmp++;
 		*str = tmp;
 	}
+	// ft_putflags(*flag);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 13:04:55 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 10:02:45 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 11:33:21 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,16 @@ char	*ft_make_s(t_flags *flag, char *str)
 {
 	char *ret;
 
-	ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
-	ret = ft_strncpy(ret, str, (ft_strlen(str) + 1));
+	if (!str)
+	{
+		ret = (char *)malloc(sizeof(char) * (ft_strlen("(null)") + 1));
+		ret = ft_strncpy(ret, "(null)", (ft_strlen("(null)") + 1));
+	}
+	else
+	{
+		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+		ret = ft_strncpy(ret, str, (ft_strlen(str) + 1));
+	}
 	ft_checkflags(flag, 0);
 	if (flag->precision)
 		ret = ft_makepres_s(ret, flag->precision);

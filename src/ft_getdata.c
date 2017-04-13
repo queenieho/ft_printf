@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:40:47 by qho               #+#    #+#             */
-/*   Updated: 2017/04/12 23:51:20 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 15:15:00 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	ft_getshrtlong(t_flags *flag, va_list *arg, t_data *data)
 {
 	if ((flag->conv_i >= 0 && flag->conv_i <= 5) && flag->lm == 1)
 	{
-		data->nb = va_arg(*arg, int);
+		data->nb = (char)va_arg(*arg, int);
 		if (flag->conv_i >= 2 && data->nb < 0)
 			data->nb = UCHAR_MAX + data->nb + 1;
 	}
 	else if ((flag->conv_i >= 0 && flag->conv_i <= 5) && flag->lm == 2)
 	{
-		data->nb = va_arg(*arg, int);
+		data->nb = (short)va_arg(*arg, int);
 		if (flag->conv_i >= 2 && data->nb < 0)
 			data->nb = USHRT_MAX + data->nb + 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:13:18 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 09:47:35 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 16:20:29 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,32 @@
 ** Checking flags
 */
 
-void		ft_checkflags(t_flags *flag, unsigned long long nb)
+void		ft_checkflags(t_flags *f, unsigned long long nb)
 {
-	if (flag->precision)
-		flag->zero = 0;
-	if (flag->hash)
-		if ((flag->conv != 'o' && flag->conv != 'O' &&
-			flag->conv != 'x' && flag->conv != 'X') || nb == 0)
-			flag->hash = 0;
-	if (flag->zero)
+	if (f->x_pres && nb)
+		f->x_pres = 0;
+	if (f->precision)
+		f->zero = 0;
+	if (f->hash)
+		if ((f->conv != 'o' && f->conv != 'O' && f->conv != 'x' &&
+			f->conv != 'X') || (nb == 0 && (f->conv == 'x' || f->conv == 'X')))
+			f->hash = 0;
+	if (f->zero)
 	{
-		if (flag->conv_i > 8)
-			flag->zero = 0;
-		if (flag->minus)
-			flag->zero = 0;
+		if (f->conv_i > 8)
+			f->zero = 0;
+		if (f->minus)
+			f->zero = 0;
 	}
-	if (flag->plus)
+	if (f->plus)
 	{
-		if (flag->conv != 'd' && flag->conv != 'D' && flag->conv != 'i')
-			flag->plus = 0;
-		flag->space = 0;
+		if (f->conv != 'd' && f->conv != 'D' && f->conv != 'i')
+			f->plus = 0;
+			f->space = 0;
 	}
-	if (flag->space)
-		if ((flag->conv != 'd' && flag->conv != 'D' && flag->conv != 'i')
-			|| flag->plus)
-			flag->space = 0;
+	if (f->space)
+		if ((f->conv != 'd' && f->conv != 'D' && f->conv != 'i') || f->plus)
+			f->space = 0;
 }
 
 /*
@@ -73,12 +74,10 @@ char		*ft_itoa_base(unsigned long long value, int base)
 	int		size;
 
 	i = 0;
-	if (value == 0)
-	{
-		s = (char *)malloc(sizeof(char) * 2);
-		s[0] = '0';
-		s[1] = '\0';
-	}
+	if ((long)value == LONG_MIN)
+		s = ft_strdup("9223372036854775808");
+	else if (value == 0)
+		s = ft_strdup("0");
 	else
 	{
 		size = val_size(value, base);
@@ -105,6 +104,7 @@ char		*ft_make_num(t_flags *flag, unsigned long long nb)
 	char	*ret;
 	int		base;
 
+	// ft_putflags(*flag);
 	if (flag->conv == 'o' || flag->conv == 'O')
 		base = 8;
 	else if (flag->conv == 'x' || flag->conv == 'X')
@@ -113,17 +113,22 @@ char		*ft_make_num(t_flags *flag, unsigned long long nb)
 		base = 10;
 	ret = ft_itoa_base(nb, base);
 	ft_checkflags(flag, nb);
+	// ft_putflags(*flag);
+	// ft_putendl(ret);
 	// ft_putendl("flags checked");
-	if (flag->precision)
-		ret = ft_makepres(ret, flag->precision);
+	if (flag->precision || flag->x_pres)
+		ret = ft_makepres(ret, flag->precision, flag->x_pres);
+	// ft_putendl(ret);
 	// ft_putendl("make pres?");
 	if (flag->f_width)
 		ret = ft_makewide(ret, flag->f_width, flag->minus);
 	// ft_putendl("make width?");
 	// ft_putendl(ret);
 	if (flag->plus || flag->space || flag->hash || flag->neg || flag->zero)
+	{
+		// ft_putendl("make mod?");
 		ret = ft_modnum(ret, flag, flag->neg);
-	// ft_putendl("make mod?");
+	}
 	if (flag->conv == 'x')
 		ret = ft_changecase(ret);
 	// ft_putendl("make num end?");

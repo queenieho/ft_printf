@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:52:29 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 09:47:00 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 16:13:16 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct	s_flags
 	char	conv;
 	int		conv_i;
 	int		neg;
+	int		x_pres;
 }				t_flags;
 
 typedef struct	s_data
@@ -105,7 +106,7 @@ void	ft_checkflags(t_flags *flag, unsigned long long nb);
 char	*ft_makewide02(char *str, int width, int left);
 char	*ft_makewide(char *str, int width, int left);
 char	*ft_makepres02(char *str, int j, int pres);
-char	*ft_makepres(char *str, int pres);
+char	*ft_makepres(char *str, int pres, int x_flag);
 
 
 int		ft_tolower(int c);

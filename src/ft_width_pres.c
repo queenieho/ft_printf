@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:37:16 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 09:09:36 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 16:16:40 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*ft_makepres02(char *str, int j, int pres)
 	return (ret);
 }
 
-char	*ft_makepres(char *str, int pres)
+char	*ft_makepres(char *str, int pres, int x_flag)
 {
 	char	*ret;
 	int		i;
@@ -106,8 +106,14 @@ char	*ft_makepres(char *str, int pres)
 
 	i = ft_strlen(str);
 	j = i - 1;
+	// ft_putnbr(x_flag);
 	if (pres > i)
 		ret = ft_makepres02(str, j, pres);
+	else if (pres == 0 && x_flag == 1)
+	{
+		ret = (char *)malloc(sizeof(char) * 1);
+		ret[0] = '\0';
+	}
 	else
 	{
 		ret = (char *)malloc(sizeof(char) * (i + 1));

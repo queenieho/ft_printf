@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:56:39 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 09:08:15 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 15:23:23 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,11 @@ int		ft_printf(const char *restrict format, ...)
 		if (*str.tmp != '%')
 			ft_putchar_pf(*str.tmp, &str.cnt);
 		else
+		{
 			ft_conversion(&arg, &flag, &data, &str);
+			ft_bzero(&flag, sizeof(t_flags));
+			ft_bzero(&data, sizeof(t_data));
+		}
 		str.tmp++;
 	}
 	va_end(arg);
