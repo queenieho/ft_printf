@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:56:39 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 15:23:23 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 19:13:20 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,19 @@ void	ft_print_conv(t_flags *flag, t_data *data, t_format *str)
 		ft_putstr_pf(ft_make_num(flag, data->nb), &str->cnt);
 	else if (flag->conv_i == 9 && flag->lm == 0)
 		ft_putstr_pf(ft_make_c(flag, data->c, &str->cnt), &str->cnt);
-	else if ((flag->conv_i == 10 && flag->lm == 0) ||
+	else if ((flag->conv_i == 10) ||
 		(flag->conv_i == 9 && flag->lm == 3))
 		ft_putwstr_pf(ft_make_wc(flag, data->w_chr, &str->cnt), &str->cnt);
 	else if (flag->conv_i == 11 && flag->lm == 0)
+	{
+		// ft_putendl("regular");
 		ft_putstr_pf(ft_make_s(flag, data->str), &str->cnt);
-	else if ((flag->conv_i == 12 && flag->lm == 0) ||
-		(flag->conv_i == 11 && flag->lm == 3))
+	}
+	else if ((flag->conv_i == 12) || (flag->conv_i == 11 && flag->lm == 3))
 		ft_putwstr_pf(ft_make_wstr(flag, data->w_str), &str->cnt);
 	else if (flag->conv_i == 13)
 		ft_putstr_pf(ft_make_ptr(data->ptr), &str->cnt);
-	else
+	else if (flag->conv_i == 14)
 		ft_putstr_pf(ft_make_c(flag, data->c, &str->cnt), &str->cnt);
 }
 
@@ -50,10 +52,16 @@ void	ft_conversion(va_list *arg, t_flags *flag, t_data *data, t_format *str)
 {
 	str->found = str->tmp;
 	str->tmp++;
+	if ((ft_clen(str->tmp) == -1))
+	{
+		str->tmp--;
+		return ;
+	}
 	str->conv = (char *)malloc(sizeof(char) * ft_clen(str->tmp) + 1);
 	str->conv = ft_strncpy(str->conv, str->tmp, ft_clen(str->tmp));
 	str->conv[ft_clen(str->tmp)] = '\0';
-	ft_parse(str->conv, flag);
+	if ((ft_parse(str->conv, flag)) == -1)
+		return ;
 	if (flag->fw_ast || flag->p_ast)
 		ft_get_wp(flag, arg);
 	ft_getdata(flag, arg, data);

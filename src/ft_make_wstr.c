@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:59:49 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 10:02:24 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 19:20:51 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,24 @@ wchar_t	*ft_makepres_ws(wchar_t *str, int pres)
 
 wchar_t	*ft_make_wstr(t_flags *flag, wchar_t *str)
 {
+	// ft_putendl("whyyyyy");
 	wchar_t *ret;
 
-	ret = str;
+	// (void)str;
+	// (void)flag;
+	// ret = (wchar_t *)malloc(sizeof(wchar_t) * 2);
+	// ret[0] = 'H';
+	// ret[1] = '\0';
+
+	if (!str)
+	{
+		ret = (wchar_t *)malloc(sizeof(wchar_t) * 7);
+		ret = L"(null)";
+		// ft_putwstr(ret);
+		return (ret);
+	}
+	else
+		ret = str;
 	ft_checkflags(flag, 0);
 	if (flag->precision)
 		ret = ft_makepres_ws(ret, flag->precision);

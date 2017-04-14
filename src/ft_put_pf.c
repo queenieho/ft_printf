@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 11:40:29 by qho               #+#    #+#             */
-/*   Updated: 2017/04/12 11:40:59 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 18:25:07 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void	ft_putwchar_pf(wchar_t c, int *cnt)
 	}
 	else if (c <= 0xFFFF)
 	{
-		ft_putchar_pf(0xC0 | (c >> 12), cnt);
+		ft_putchar_pf(0xE0 | (c >> 12), cnt);
 		ft_putchar_pf(0x80 | ((c >> 6) & 0x3F), cnt);
 		ft_putchar_pf(0x80 | (c & 0x3F), cnt);
 	}
 	else if (c <= 0x1FFFF)
 	{
-		ft_putchar_pf(0xC0 | (c >> 18), cnt);
+		ft_putchar_pf(0xF0 | (c >> 18), cnt);
 		ft_putchar_pf(0x80 | ((c >> 12) & 0x3F), cnt);
 		ft_putchar_pf(0x80 | ((c >> 6) & 0x3F), cnt);
 		ft_putchar_pf(0x80 | (c & 0x3F), cnt);

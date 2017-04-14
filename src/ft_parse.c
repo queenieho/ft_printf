@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/12 23:52:06 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 09:08:52 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 17:46:27 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ int	ft_parse(char *str, t_flags *flag)
 	flag->conv_i = ft_parseconv(str[(len - 1)]);
 	flag->conv = str[(len - 1)];
 	str[(len - 1)] = '\0';
-	flags = ft_parseflags(str, flag);
+	if ((flags = ft_parseflags(str, flag)) == -1)
+		return (-1);
 	str += flags;
 	ft_parsenums(&str, flag);
 	ft_parselenmod(&str, flag);

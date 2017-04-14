@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:40:47 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 15:15:00 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 19:13:56 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ void	ft_getdata(t_flags *flag, va_list *arg, t_data *data)
 		ft_getnumber(flag, arg, data);
 	else if (flag->conv_i == 9 && flag->lm == 0)
 		data->c = va_arg(*arg, int);
-	else if ((flag->conv_i == 10 && flag->lm == 0) ||
+	else if ((flag->conv_i == 10) ||
 		(flag->conv_i == 9 && flag->lm == 3))
 		data->w_chr = va_arg(*arg, wchar_t);
 	else if (flag->conv_i == 11 && flag->lm == 0)
 		data->str = va_arg(*arg, char*);
-	else if ((flag->conv_i == 12 && flag->lm == 0) ||
+	else if ((flag->conv_i == 12) ||
 		(flag->conv_i == 11 && flag->lm == 3))
 		data->w_str = va_arg(*arg, wchar_t*);
 	else if (flag->conv_i == 13)
