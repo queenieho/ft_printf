@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:56:39 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 19:13:20 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 17:11:33 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,24 @@ void	ft_print_conv(t_flags *flag, t_data *data, t_format *str)
 	if (flag->conv_i >= 0 && flag->conv_i <= 8)
 		ft_putstr_pf(ft_make_num(flag, data->nb), &str->cnt);
 	else if (flag->conv_i == 9 && flag->lm == 0)
+	{
 		ft_putstr_pf(ft_make_c(flag, data->c, &str->cnt), &str->cnt);
+		if (data->c == '\0')
+			ft_putchar_pf('\0', &str->cnt);
+	}
 	else if ((flag->conv_i == 10) ||
 		(flag->conv_i == 9 && flag->lm == 3))
-		ft_putwstr_pf(ft_make_wc(flag, data->w_chr, &str->cnt), &str->cnt);
-	else if (flag->conv_i == 11 && flag->lm == 0)
 	{
-		// ft_putendl("regular");
-		ft_putstr_pf(ft_make_s(flag, data->str), &str->cnt);
+		ft_putwstr_pf(ft_make_wc(flag, data->w_chr, str), &str->cnt);
+		if (data->w_chr == '\0')
+			ft_putwchar_pf('\0', &str->cnt);
 	}
+	else if (flag->conv_i == 11 && flag->lm == 0)
+		ft_putstr_pf(ft_make_s(flag, data->str), &str->cnt);
 	else if ((flag->conv_i == 12) || (flag->conv_i == 11 && flag->lm == 3))
 		ft_putwstr_pf(ft_make_wstr(flag, data->w_str), &str->cnt);
 	else if (flag->conv_i == 13)
-		ft_putstr_pf(ft_make_ptr(data->ptr), &str->cnt);
+		ft_putstr_pf(ft_make_ptr(flag, data->ptr), &str->cnt);
 	else if (flag->conv_i == 14)
 		ft_putstr_pf(ft_make_c(flag, data->c, &str->cnt), &str->cnt);
 }

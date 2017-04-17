@@ -6,11 +6,24 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 13:04:55 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 11:33:21 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 17:09:03 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	ft_mod_str(char **str)
+{
+	char *tmp;
+
+	tmp = *str;
+	while (*tmp)
+	{
+		if (*tmp == ' ')
+			*tmp = '0';
+		tmp++;
+	}
+}
 
 /*
 ** Making string from char
@@ -33,11 +46,17 @@ char	*ft_make_c(t_flags *flag, int c, int *cnt)
 	{
 		ret = (char *)malloc(sizeof(char) * 1);
 		ret[0] = '\0';
-		n_cnt = 1;
+		if (flag->f_width)
+			flag->f_width--;
+		(void)cnt;
+		// ft_putchar_pf(c, cnt);
+		// n_cnt = 1;
 	}
 	if (flag->f_width)
 		ret = ft_makewide(ret, flag->f_width - n_cnt, flag->minus);
-	*cnt += n_cnt;
+	if (flag->zero)
+		ft_mod_str(&ret);
+	// *cnt += n_cnt;
 	return (ret);
 }
 
@@ -45,16 +64,21 @@ char	*ft_make_c(t_flags *flag, int c, int *cnt)
 ** Making string from string!
 */
 
-char	*ft_makepres_s(char *str, int pres)
+char	*ft_makepres_s(char *str, t_flags *flag)
 {
 	char	*ret;
 	int		i;
 
 	i = -1;
-	if (pres < ft_strlen(str))
+	if (flag->x_pres)
 	{
-		ret = (char *)malloc(sizeof(char) * (pres + 1));
-		while (++i < pres)
+		ret = (char *)malloc(sizeof(char) * 1);
+		ret[0] = '\0';
+	}
+	if (flag->precision < ft_strlen(str))
+	{
+		ret = (char *)malloc(sizeof(char) * (flag->precision + 1));
+		while (++i < flag->precision)
 			ret[i] = str[i];
 		ret[i] = '\0';
 	}
@@ -71,6 +95,7 @@ char	*ft_makepres_s(char *str, int pres)
 
 char	*ft_make_s(t_flags *flag, char *str)
 {
+	// ft_putendl("making string");
 	char *ret;
 
 	if (!str)
@@ -83,10 +108,14 @@ char	*ft_make_s(t_flags *flag, char *str)
 		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 		ret = ft_strncpy(ret, str, (ft_strlen(str) + 1));
 	}
+	// ft_putflags(*flag);
 	ft_checkflags(flag, 0);
-	if (flag->precision)
-		ret = ft_makepres_s(ret, flag->precision);
+	// ft_putflags(*flag);
+	if (flag->precision || flag->x_pres)
+		ret = ft_makepres_s(ret, flag);
 	if (flag->f_width)
 		ret = ft_makewide(ret, flag->f_width, flag->minus);
+	if (flag->zero)
+		ft_mod_str(&ret);
 	return (ret);
 }

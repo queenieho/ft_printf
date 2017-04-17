@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:13:18 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 16:20:29 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 22:29:48 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,17 @@
 
 void		ft_checkflags(t_flags *f, unsigned long long nb)
 {
-	if (f->x_pres && nb)
+	if (f->x_pres && (nb || (f->hash && (f->conv == 'o' || f->conv == 'O'))))
 		f->x_pres = 0;
 	if (f->precision)
 		f->zero = 0;
 	if (f->hash)
-		if ((f->conv != 'o' && f->conv != 'O' && f->conv != 'x' &&
-			f->conv != 'X') || (nb == 0 && (f->conv == 'x' || f->conv == 'X')))
+		if ((f->conv != 'o' && f->conv != 'O' && f->conv != 'x' && 
+			f->conv != 'X') || (nb == 0 && (f->conv == 'o' || f->conv == 'O' ||
+			f->conv == 'x' || f->conv == 'X')))
 			f->hash = 0;
 	if (f->zero)
 	{
-		if (f->conv_i > 8)
-			f->zero = 0;
 		if (f->minus)
 			f->zero = 0;
 	}
@@ -74,8 +73,10 @@ char		*ft_itoa_base(unsigned long long value, int base)
 	int		size;
 
 	i = 0;
-	if ((long)value == LONG_MIN)
+	if ((long)value == LONG_MIN && base == 10)
 		s = ft_strdup("9223372036854775808");
+	else if ((long)value == LONG_MIN && base == 8)
+		s = ft_strdup("1000000000000000000000");
 	else if (value == 0)
 		s = ft_strdup("0");
 	else

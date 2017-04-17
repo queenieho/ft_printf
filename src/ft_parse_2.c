@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:56:50 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 17:32:08 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/14 00:57:22 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,8 @@ int	ft_getpres(char **str, t_flags *flag)
 	tmp = *str;
 	tmp++;
 	// ft_putchar(flag->conv);
-	if ((flag->conv == 'x' || flag->conv == 'X' || flag->conv == 'o' ||
-		flag->conv == 'O' || flag->conv == 'd') && (*tmp != '*' ||
-		(*tmp < '0' && *tmp > '9')))
+	if (*tmp == '\0' || *tmp == '0' ||
+		(*tmp != '*' && (*tmp < '0' && *tmp > '9')))
 		flag->x_pres = 1;
 	while (*tmp == '*' || (*tmp >= '0' && *tmp <= '9'))
 	{
@@ -105,8 +104,15 @@ void		ft_parsenums(char **str, t_flags *flag)
 	char	*tmp;
 
 	tmp = *str;
+	// ft_putendl(*str);
 	if (*tmp == '*' || (*tmp >= '0' && *tmp <= '9'))
+	{
+		// ft_putchar(*tmp);
+		// ft_putendl(" <-- getting width");
 		ft_getwidth(&tmp, flag);
+	}
+	// ft_putchar(*tmp);
+	// 	ft_putendl(" <-- getting pres");
 	if (*tmp == '.')
 		ft_getpres(&tmp, flag);
 	*str = tmp;

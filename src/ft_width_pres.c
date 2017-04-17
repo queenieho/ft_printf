@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:37:16 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 16:16:40 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 17:38:20 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char 	*ft_makewide02(char *str, int width, int left)
 
 char	*ft_makewide(char *str, int width, int left)
 {
+	// ft_putendl("making width");
 	char	*ret;
 	int		i;
 	int		j;
@@ -107,6 +108,8 @@ char	*ft_makepres(char *str, int pres, int x_flag)
 	i = ft_strlen(str);
 	j = i - 1;
 	// ft_putnbr(x_flag);
+	// ft_putnbr(x_flag);
+	// ft_putchar('\n');
 	if (pres > i)
 		ret = ft_makepres02(str, j, pres);
 	else if (pres == 0 && x_flag == 1)

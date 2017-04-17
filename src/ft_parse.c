@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/12 23:52:06 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 17:46:27 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 16:44:17 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ int		ft_parseflags(char *str, t_flags *flag)
 			flag->plus = 1;
 		else if (str[i] == ' ')
 			flag->space = 1;
-		else if (str[i] == '*' || (str[i] > '0' && str[i] < '9')
+		else if (str[i] == '*' || (str[i] >= '0' && str[i] <= '9')
 			|| str[i] == '.' || str[i] == 'h' || str[i] == 'l' ||
 			str[i] == 'j' || str[i] == 'z')
+		{
 			return (flag->hash + flag->zero + flag->minus +
 				flag->plus + flag->space);
+		}
 		else
 			return (-1);
 		i++;
@@ -104,11 +106,17 @@ int	ft_parse(char *str, t_flags *flag)
 	len = ft_strlen(str);
 	flag->conv_i = ft_parseconv(str[(len - 1)]);
 	flag->conv = str[(len - 1)];
+	// ft_putchar(flag->conv);
+	// ft_putnbr(flag->conv_i);
+	// ft_putchar('\n');
 	str[(len - 1)] = '\0';
 	if ((flags = ft_parseflags(str, flag)) == -1)
 		return (-1);
 	str += flags;
+	if (flag->conv_i == 13)
+		flag->hash = 1;
 	ft_parsenums(&str, flag);
+	// ft_putflags(*flag);
 	ft_parselenmod(&str, flag);
 	return (1);
 }

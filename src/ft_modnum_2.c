@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:10:40 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 16:17:16 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 22:17:22 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,14 @@ char	*ft_modnum01(char *str, t_flags *flag, int neg, int sp)
 	j = 0;
 	if (sp)
 		ret = ft_modnum011(str, flag, neg);
+	else if (str[0] == '0' && (flag->conv == 'o' || flag->conv == 'O'))
+	{
+		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+		ret = ft_strncpy(ret, str, (ft_strlen(str) + 1));
+	}
 	else
 	{
+		// ft_putendl("ADDING 0");
 		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
 		ret[i++] = ft_addsign(flag, neg);
 		while (j < ft_strlen(str))

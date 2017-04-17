@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:59:49 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 19:20:51 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 17:14:07 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_samewidth_ws(wchar_t *ret, wchar_t *str, int width, int left)
 	{
 		while (str[j])
 			ret[i++] = str[j++];
-		while (i < width)
+		while (i < width + j - ft_wstr_len(str))
 			ret[i++] = ' ';
 		ret[i] = '\0';
 	}
@@ -60,12 +60,12 @@ wchar_t	*ft_makewide_ws(wchar_t *str, int width, int left)
 	return (ret);
 }
 
-wchar_t	*ft_make_wc(t_flags *flag, int c, int *cnt)
+wchar_t	*ft_make_wc(t_flags *flag, int c, t_format *str)
 {
 	wchar_t	*ret;
-	int		n_cnt;
+	// int		n_cnt;
 
-	n_cnt = 0;
+	// n_cnt = 0;
 	ft_checkflags(flag, 0);
 	if (c)
 	{
@@ -77,11 +77,14 @@ wchar_t	*ft_make_wc(t_flags *flag, int c, int *cnt)
 	{
 		ret = (wchar_t *)malloc(sizeof(wchar_t) * 1);
 		ret[0] = '\0';
-		n_cnt = 1;
+		(void)str;
+		if (flag->f_width)
+			flag->f_width--;
+		// n_cnt = 1;
 	}
 	if (flag->f_width)
-		ret = ft_makewide_ws(ret, flag->f_width - n_cnt, flag->minus);
-	*cnt += n_cnt;
+		ret = ft_makewide_ws(ret, flag->f_width, flag->minus);
+	// str->cnt += n_cnt;
 	return (ret);
 }
 
@@ -89,7 +92,7 @@ wchar_t	*ft_make_wc(t_flags *flag, int c, int *cnt)
 ** Making wstring from wstring!
 */
 
-wchar_t	*ft_makepres_ws(wchar_t *str, int pres)
+wchar_t	*ft_makepres_ws(wchar_t *str, t_flags *flag)
 {
 	wchar_t	*ret;
 	int		i;
@@ -97,13 +100,20 @@ wchar_t	*ft_makepres_ws(wchar_t *str, int pres)
 
 	i = -1;
 	len = 0;
-	if (pres < ft_wstr_len(str))
+	if (flag->x_pres)
 	{
-		ret = (wchar_t *)malloc(sizeof(wchar_t) * (pres + 1));
-		while (str[++i] && len < pres)
+		ret = (wchar_t *)malloc(sizeof(wchar_t) * 1);
+		ret[0] = '\0';
+	}
+	if (flag->precision < ft_wstr_len(str))
+	{
+		ret = (wchar_t *)malloc(sizeof(wchar_t) * (flag->precision + 1));
+		while (str[++i] && len < flag->precision)
 		{
 			ret[i] = str[i];
 			len += ft_wchar_len(ret[i]);
+			if (len > flag->precision)
+				break ;
 		}
 		ret[i] = '\0';
 	}
@@ -122,12 +132,6 @@ wchar_t	*ft_make_wstr(t_flags *flag, wchar_t *str)
 	// ft_putendl("whyyyyy");
 	wchar_t *ret;
 
-	// (void)str;
-	// (void)flag;
-	// ret = (wchar_t *)malloc(sizeof(wchar_t) * 2);
-	// ret[0] = 'H';
-	// ret[1] = '\0';
-
 	if (!str)
 	{
 		ret = (wchar_t *)malloc(sizeof(wchar_t) * 7);
@@ -138,9 +142,11 @@ wchar_t	*ft_make_wstr(t_flags *flag, wchar_t *str)
 	else
 		ret = str;
 	ft_checkflags(flag, 0);
-	if (flag->precision)
-		ret = ft_makepres_ws(ret, flag->precision);
+	if (flag->precision || flag->x_pres)
+		ret = ft_makepres_ws(ret, flag);
 	if (flag->f_width)
 		ret = ft_makewide_ws(ret, flag->f_width, flag->minus);
+	if (flag->zero)
+		ft_mod_wstr(&ret);
 	return (ret);
 }

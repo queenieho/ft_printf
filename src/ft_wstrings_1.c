@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:54:10 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 18:04:02 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/13 22:24:26 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 /*
 ** Applying width to w_char
 */
+void	ft_mod_wstr(wchar_t **str)
+{
+	wchar_t *tmp;
+
+	tmp = *str;
+	while (*tmp)
+	{
+		if (*tmp == ' ')
+			*tmp = '0';
+		tmp++;
+	}
+}
 
 int		ft_wchar_len(wchar_t c)
 {

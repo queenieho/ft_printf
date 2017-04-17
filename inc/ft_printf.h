@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:52:29 by qho               #+#    #+#             */
-/*   Updated: 2017/04/13 16:13:16 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/16 17:40:10 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct	s_data
 typedef struct	s_format
 {
 	int			cnt;
+	// int			null_cnt;
 	char		*found;
 	char		*conv;
 	char 		*tmp;
@@ -126,17 +127,19 @@ char	*ft_itoa_base(unsigned long long value, int base);
 
 char	*ft_make_c(t_flags *flag, int c, int *cnt);
 
-char	*ft_makepres_s(char *str, int pres);
+char	*ft_makepres_s(char *str, t_flags *flag);
 char	*ft_make_s(t_flags *flag, char *str);
 
+void	ft_mod_wstr(wchar_t **str);
 int		ft_wchar_len(wchar_t c);
 int		ft_wstr_len(const wchar_t *ws);
 wchar_t	*ft_makewide_ws(wchar_t *str, int width, int left);
-wchar_t	*ft_make_wc(t_flags *flag, int c, int *cnt);
-wchar_t	*ft_makepres_ws(wchar_t *str, int pres);
+wchar_t	*ft_make_wc(t_flags *flag, int c, t_format *str);
+wchar_t	*ft_makepres_ws(wchar_t *str, t_flags *flag);
 wchar_t	*ft_make_wstr(t_flags *flag, wchar_t *str);
-char	*ft_addhex(char *str);
-char	*ft_make_ptr(void *nb);
+
+char	*ft_addhex(char *str, int left);
+char	*ft_make_ptr(t_flags *flag, void *nb);
 
 
 void	ft_getshrtlong(t_flags *flag, va_list *arg, t_data *data);

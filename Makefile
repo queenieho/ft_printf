@@ -6,7 +6,7 @@
 #    By: qho <qho@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 13:42:02 by qho               #+#    #+#              #
-#    Updated: 2017/04/13 21:13:00 by qho              ###   ########.fr        #
+#    Updated: 2017/04/16 22:39:57 by qho              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ test: $(NAME)
 	@$(CC) -Wformat -I$(INC) $(NAME) main.c -o $(EXE)
 
 norm:
-	@norminette $(SRC) $(INC)
+	norminette $(SRC) $(INC)
 
 clean:
 	@/bin/rm -rf $(OBJ)
