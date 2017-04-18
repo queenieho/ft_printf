@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 13:15:55 by qho               #+#    #+#             */
-/*   Updated: 2017/04/16 17:45:31 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 15:48:52 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	*ft_modnum021(char *str)
 	j = 0;
 	if (str[0] != ' ' && str[0] != '0')
 	{
-		// ft_putendl("no room");
 		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 		ret[i++] = '0';
 		ret[i++] = 'x';
@@ -68,10 +67,7 @@ char	*ft_modnum02(char *str, int sp)
 	i = 0;
 	j = 0;
 	if (sp >= 2)
-	{
-		// ft_putendl("space");
 		ret = ft_modnum021(str);
-	}
 	else
 	{
 		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 3 - sp));
@@ -106,7 +102,6 @@ char	*ft_modnum(char *str, t_flags *flag, int neg)
 	int		i;
 	int		j;
 
-	// ft_putendl("modding num?");
 	sp = ft_countspace(str);
 	i = 0;
 	j = 0;
@@ -116,17 +111,11 @@ char	*ft_modnum(char *str, t_flags *flag, int neg)
 			str[i++] = '0';
 		j++;
 	}
-	// ft_putendl(str);
 	if (flag->plus || flag->space || neg ||
 		(flag->hash && (flag->conv == 'o' || flag->conv == 'O')))
 		ret = ft_modnum01(str, flag, neg, sp);
 	else if (flag->hash && (flag->conv == 'x' || flag->conv == 'X'))
-	{
-		// ft_putendl("here?");
-		// ft_putendl(str);
 		ret = ft_modnum02(str, sp);
-		// ft_putendl("num modded");
-	}
 	else
 		ret = ft_modnum03(str);
 	ft_strdel(&str);

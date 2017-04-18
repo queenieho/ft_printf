@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:10:40 by qho               #+#    #+#             */
-/*   Updated: 2017/04/16 22:17:22 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 15:47:41 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	ft_addsign(t_flags *flag, int neg)
 
 char	*ft_modnum011(char *str, t_flags *flag, int neg)
 {
-	// ft_putendl("modnum 011");
 	char	*ret;
 	int		i;
 	int		j;
@@ -51,7 +50,6 @@ char	*ft_modnum011(char *str, t_flags *flag, int neg)
 	ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (str[0] != ' ' && ft_countspace(str))
 	{
-		// ft_putendl("here");
 		ret[i++] = ft_addsign(flag, neg);
 		while (i < ft_strlen(str))
 			ret[i++] = str[j++];
@@ -86,7 +84,6 @@ char	*ft_modnum01(char *str, t_flags *flag, int neg, int sp)
 	}
 	else
 	{
-		// ft_putendl("ADDING 0");
 		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
 		ret[i++] = ft_addsign(flag, neg);
 		while (j < ft_strlen(str))

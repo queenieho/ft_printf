@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:13:18 by qho               #+#    #+#             */
-/*   Updated: 2017/04/17 11:28:25 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 15:40:07 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		ft_checkflags(t_flags *f, unsigned long long nb)
 	if (f->precision)
 		f->zero = 0;
 	if (f->hash)
-		if ((f->conv != 'o' && f->conv != 'O' && f->conv != 'x' && 
+		if ((f->conv != 'o' && f->conv != 'O' && f->conv != 'x' &&
 			f->conv != 'X') || (nb == 0 && (f->conv == 'o' || f->conv == 'O' ||
 			f->conv == 'x' || f->conv == 'X')))
 			f->hash = 0;
@@ -36,7 +36,7 @@ void		ft_checkflags(t_flags *f, unsigned long long nb)
 	{
 		if (f->conv != 'd' && f->conv != 'D' && f->conv != 'i')
 			f->plus = 0;
-			f->space = 0;
+		f->space = 0;
 	}
 	if (f->space)
 		if ((f->conv != 'd' && f->conv != 'D' && f->conv != 'i') || f->plus)
@@ -101,11 +101,9 @@ char		*ft_itoa_base(unsigned long long value, int base)
 
 char		*ft_make_num(t_flags *flag, unsigned long long nb)
 {
-	// ft_putendl("make num?");
 	char	*ret;
 	int		base;
 
-	// ft_putflags(*flag);
 	if (flag->conv == 'o' || flag->conv == 'O')
 		base = 8;
 	else if (flag->conv == 'x' || flag->conv == 'X')
@@ -114,24 +112,13 @@ char		*ft_make_num(t_flags *flag, unsigned long long nb)
 		base = 10;
 	ret = ft_itoa_base(nb, base);
 	ft_checkflags(flag, nb);
-	// ft_putflags(*flag);
-	// ft_putendl(ret);
-	// ft_putendl("flags checked");
 	if (flag->precision || flag->x_pres)
 		ret = ft_makepres(ret, flag->precision, flag->x_pres);
-	// ft_putendl(ret);
-	// ft_putendl("make pres?");
 	if (flag->f_width)
 		ret = ft_makewide(ret, flag->f_width, flag->minus);
-	// ft_putendl("make width?");
-	// ft_putendl(ret);
 	if (flag->plus || flag->space || flag->hash || flag->neg || flag->zero)
-	{
-		// ft_putendl("make mod?");
 		ret = ft_modnum(ret, flag, flag->neg);
-	}
 	if (flag->conv == 'x')
 		ret = ft_changecase(ret);
-	// ft_putendl("make num end?");
 	return (ret);
 }

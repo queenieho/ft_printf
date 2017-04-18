@@ -6,7 +6,7 @@
 #    By: qho <qho@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 13:42:02 by qho               #+#    #+#              #
-#    Updated: 2017/04/18 14:07:10 by qho              ###   ########.fr        #
+#    Updated: 2017/04/18 14:45:43 by qho              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 # Source and header files, and directory
 INC		=	./inc/
-FILES	=	ft_getdata ft_make_num ft_make_ptr ft_make_str ft_make_wstr		\
+FILES	=	ft_getdata ft_make_num ft_make_ptr ft_make_str ft_make_wstr 	\
+			ft_make_wstr_2		\
 			ft_modnum ft_modnum_2 ft_parse ft_parse_2 ft_printf ft_put_pf	\
 			ft_strings_1 ft_strings_2 ft_width_pres ft_wstrings_1
 SRC		=	$(addprefix src/, $(addsuffix .c, $(FILES)))
@@ -44,7 +45,7 @@ test: $(NAME)
 	@$(CC) -Wformat -I$(INC) $(NAME) main.c -o $(EXE)
 
 norm:
-	norminette $(SRC) $(INC)
+	@norminette $(SRC) $(INC)
 
 clean:
 	@/bin/rm -rf $(OBJ)

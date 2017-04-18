@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 13:04:55 by qho               #+#    #+#             */
-/*   Updated: 2017/04/18 13:25:12 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 15:42:17 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char	*ft_make_c(t_flags *flag, int c, int *cnt)
 		ret = ft_makewide(ret, flag->f_width - n_cnt, flag->minus);
 	if (flag->zero)
 		ft_mod_str(&ret);
-	// *cnt += n_cnt;
 	return (ret);
 }
 
@@ -93,7 +92,6 @@ char	*ft_makepres_s(char *str, t_flags *flag)
 
 char	*ft_make_s(t_flags *flag, char *str)
 {
-	// ft_putendl("making string");
 	char *ret;
 
 	if (!str)
@@ -106,9 +104,7 @@ char	*ft_make_s(t_flags *flag, char *str)
 		ret = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 		ret = ft_strncpy(ret, str, (ft_strlen(str) + 1));
 	}
-	// ft_putflags(*flag);
 	ft_checkflags(flag, 0);
-	// ft_putflags(*flag);
 	if (flag->precision || flag->x_pres)
 		ret = ft_makepres_s(ret, flag);
 	if (flag->f_width)
