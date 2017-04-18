@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:56:50 by qho               #+#    #+#             */
-/*   Updated: 2017/04/14 00:57:22 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 14:06:23 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ int		ft_clen(char *str)
 				return (i + 1);
 			j++;
 		}
+		if ((str[i] != '#' || str[i] != '0' || str[i] != '-' || str[i] != '+' ||
+			str[i] != ' ' || (str[i] < '0' && str[i] > '9') || str[i] != 'h' ||
+			str[i] != '*' || str[i] != '.' || str[i] != 'l' || str[i] != 'j' ||
+			str[i] != 'z') && j >= 15)
+		{
+			return (-1);
+		}
 		i++;
 	}
 	return (-1);
@@ -37,7 +44,7 @@ int		ft_clen(char *str)
 ** If field width is *, stores * flag. If Field width is a number, stores width.
 */
 
-int	ft_getwidth(char **str, t_flags *flag)
+int	ft_getwidth(char **str, t_flags *flag, va_list *arg)
 {
 	char *tmp;
 
@@ -46,14 +53,16 @@ int	ft_getwidth(char **str, t_flags *flag)
 	{
 		if (*tmp == '*')
 		{
-			if (flag->fw_ast || flag->f_width)
-				return (-1);
-			flag->fw_ast = 1;
+			flag->f_width = va_arg(*arg, int);
+			if (flag->f_width < 0)
+			{
+				flag->f_width = - flag->f_width;
+				flag->minus = 1;
+			}
+			// flag->fw_ast = 1;
 		}
 		else if (*tmp >= '0' && *tmp <= '9')
 		{
-			if (flag->fw_ast || flag->f_width)
-				return (-1);
 			flag->f_width = ft_atoi(tmp);
 			while (*tmp >= '0' && *tmp <= '9')
 				tmp++;
@@ -62,10 +71,11 @@ int	ft_getwidth(char **str, t_flags *flag)
 		tmp++;
 		*str = tmp;
 	}
+	// ft_putflags(*flag);
 	return (1);
 }
 
-int	ft_getpres(char **str, t_flags *flag)
+int	ft_getpres(char **str, t_flags *flag, va_list *arg)
 {
 	char *tmp;
 
@@ -78,15 +88,16 @@ int	ft_getpres(char **str, t_flags *flag)
 	while (*tmp == '*' || (*tmp >= '0' && *tmp <= '9'))
 	{
 		if (*tmp == '*')
-		// {
-		// 	if (flag->p_ast || flag->precision)
-		// 		return (-1);
-			flag->p_ast = 1;
-		// }
+		{
+			flag->precision = va_arg(*arg, int);
+			if (flag->precision == 0)
+				flag->x_pres = 1;
+			else if (flag->precision < 0)
+				flag->precision = 0;
+			// flag->p_ast = 1;
+		}
 		else if (*tmp >= '0' && *tmp <= '9')
 		{
-			// if (flag->p_ast || flag->precision)
-			// 	return (-1);
 			flag->precision = ft_atoi(tmp);
 			while (*tmp >= '0' && *tmp <= '9')
 				tmp++;
@@ -99,7 +110,7 @@ int	ft_getpres(char **str, t_flags *flag)
 	return (1);
 }
 
-void		ft_parsenums(char **str, t_flags *flag)
+void		ft_parsenums(char **str, t_flags *flag, va_list *arg)
 {
 	char	*tmp;
 
@@ -109,11 +120,11 @@ void		ft_parsenums(char **str, t_flags *flag)
 	{
 		// ft_putchar(*tmp);
 		// ft_putendl(" <-- getting width");
-		ft_getwidth(&tmp, flag);
+		ft_getwidth(&tmp, flag, arg);
 	}
 	// ft_putchar(*tmp);
 	// 	ft_putendl(" <-- getting pres");
 	if (*tmp == '.')
-		ft_getpres(&tmp, flag);
+		ft_getpres(&tmp, flag, arg);
 	*str = tmp;
 }

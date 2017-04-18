@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/12 23:52:06 by qho               #+#    #+#             */
-/*   Updated: 2017/04/16 16:44:17 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 14:01:08 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int		ft_parseflags(char *str, t_flags *flag)
 			return (flag->hash + flag->zero + flag->minus +
 				flag->plus + flag->space);
 		}
-		else
-			return (-1);
+		// else
+		// 	return (-1);
 		i++;
 	}
 	return (flag->hash + flag->zero + flag->minus + flag->plus + flag->space);
@@ -95,7 +95,7 @@ int	ft_parseconv(char c)
 ** Stores the conversion.
 */
 
-int	ft_parse(char *str, t_flags *flag)
+int	ft_parse(char *str, t_flags *flag, va_list *arg)
 {
 	int i;
 	int	flags;
@@ -106,17 +106,17 @@ int	ft_parse(char *str, t_flags *flag)
 	len = ft_strlen(str);
 	flag->conv_i = ft_parseconv(str[(len - 1)]);
 	flag->conv = str[(len - 1)];
-	// ft_putchar(flag->conv);
-	// ft_putnbr(flag->conv_i);
-	// ft_putchar('\n');
 	str[(len - 1)] = '\0';
 	if ((flags = ft_parseflags(str, flag)) == -1)
 		return (-1);
 	str += flags;
 	if (flag->conv_i == 13)
 		flag->hash = 1;
-	ft_parsenums(&str, flag);
+	// ft_putendl("num parse?");
+	ft_parsenums(&str, flag, arg);
+
 	// ft_putflags(*flag);
 	ft_parselenmod(&str, flag);
+	// ft_putendl("end of parse?");
 	return (1);
 }

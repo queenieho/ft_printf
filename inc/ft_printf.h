@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:52:29 by qho               #+#    #+#             */
-/*   Updated: 2017/04/16 17:40:10 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 14:02:01 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,14 @@ int		ft_atoi(const char *str);
 */
 
 int		ft_parseflags(char *str, t_flags *flag);
-int		ft_getwidth(char **str, t_flags *flag);
-int		ft_getpres(char **str, t_flags *flag);
-void	ft_parsenums(char **str, t_flags *flag);
+int		ft_getwidth(char **str, t_flags *flag, va_list *arg);
+int		ft_getpres(char **str, t_flags *flag, va_list *arg);
+void	ft_parsenums(char **str, t_flags *flag, va_list *arg);
 int		ft_parseconv(char c);
 void	ft_parselenmod(char **str, t_flags *flag);
-int		ft_parse(char *str, t_flags *flag);
+int		ft_parse(char *str, t_flags *flag, va_list *arg);
 int		ft_clen(char *str); //conversion lenght?
+
 
 void	ft_checkflags(t_flags *flag, unsigned long long nb);
 

@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 13:04:55 by qho               #+#    #+#             */
-/*   Updated: 2017/04/16 17:09:03 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 13:25:12 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ char	*ft_make_c(t_flags *flag, int c, int *cnt)
 		if (flag->f_width)
 			flag->f_width--;
 		(void)cnt;
-		// ft_putchar_pf(c, cnt);
-		// n_cnt = 1;
 	}
 	if (flag->f_width)
 		ret = ft_makewide(ret, flag->f_width - n_cnt, flag->minus);
