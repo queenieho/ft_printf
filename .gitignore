@@ -13,3 +13,4 @@ main.c
 test.c
 
 /src/random.c
+*DS_Store
