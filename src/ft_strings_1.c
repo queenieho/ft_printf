@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:51:10 by qho               #+#    #+#             */
-/*   Updated: 2017/04/18 15:53:39 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 19:10:06 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_strdup(const char *s1)
 	char			*dst;
 
 	i = 0;
-	dst = (char *)malloc(ft_strlen(s1) + 1);
+	dst = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (dst != NULL)
 	{
 		ft_strcpy(dst, s1);

@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:56:39 by qho               #+#    #+#             */
-/*   Updated: 2017/04/18 15:51:17 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/18 19:03:47 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,15 @@ void	ft_conversion(va_list *arg, t_flags *flag, t_data *data, t_format *str)
 			str->tmp--;
 			return ;
 		}
-		str->conv = (char *)malloc(sizeof(char) * ft_invalid(str->tmp) + 1);
-		str->conv = ft_strncpy(str->conv, str->tmp, ft_invalid(str->tmp));
+		str->conv = (char *)malloc(sizeof(char) * (ft_invalid(str->tmp) + 1));
+		str->conv = ft_strncpy(str->conv, str->tmp, (ft_invalid(str->tmp)));
 		str->conv[ft_invalid(str->tmp)] = '\0';
 		str->tmp += (ft_invalid(str->tmp) - 1);
 	}
 	else
 	{
-		str->conv = (char *)malloc(sizeof(char) * ft_clen(str->tmp) + 1);
-		str->conv = ft_strncpy(str->conv, str->tmp, ft_clen(str->tmp));
+		str->conv = (char *)malloc(sizeof(char) * (ft_clen(str->tmp) + 1));
+		str->conv = ft_strncpy(str->conv, str->tmp, (ft_clen(str->tmp)));
 		str->conv[ft_clen(str->tmp)] = '\0';
 		str->tmp += (ft_clen(str->tmp) - 1);
 	}
