@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:37:16 by qho               #+#    #+#             */
-/*   Updated: 2017/04/19 23:42:52 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/20 00:15:51 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,28 @@ char	*ft_makewide(char *str, int width, int left)
 ** PRECISION
 */
 
+static char	*ft_strnew(size_t size)
+{
+	void	*ret;
+
+	ret = malloc(size + 1);
+	if (ret)
+		ft_bzero(ret, size + 1);
+	return (ret);
+}
+
 char	*ft_makepres02(char *str, int j, int pres)
 {
 	char	*ret;
 	int		i;
 
-	ret = (char *)malloc(sizeof(char) * (pres + 2));
+	// ret = (char *)malloc(sizeof(char) * (pres + 2));
+	ret = ft_strnew(pres + 1);
+	// long long nb = (long long)ret;
+	// ft_putnbr(nb);
 	i = pres;
 	ret[i] = '\0';
-	while ((i + 1) && (j + 1))
+	while ((i + 1) && (j + 1) && pres)
 	{
 		if (str[j] != ' ')
 			ret[--i] = str[j--];
@@ -86,7 +99,7 @@ char	*ft_makepres02(char *str, int j, int pres)
 			ret[--i] = '0';
 		pres--;
 	}
-	while (i + 1)
+	while (i + 1 && pres)
 	{
 		if (pres > 0)
 			ret[--i] = '0';

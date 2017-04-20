@@ -6,7 +6,7 @@
 #    By: qho <qho@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 13:42:02 by qho               #+#    #+#              #
-#    Updated: 2017/04/19 23:42:57 by qho              ###   ########.fr        #
+#    Updated: 2017/04/20 00:16:16 by qho              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ $(OBJ):	$(SRC)
 test: $(NAME)
 	# @$(CC) -Wformat -I$(INC) $(NAME) main.c -o $(EXE)
 	# clang -fsanitize=address -I$(INC) $(NAME) main.c
-	clang -I$(INC) $(NAME) main.c
+	clang -g -I$(INC) $(SRC) main.c
 
 norm:
 	@norminette $(SRC) $(INC)
