@@ -3,6 +3,7 @@
 *.a
 
 a.out
+a.out*
 
 /other/**
 /obj/**
@@ -14,3 +15,6 @@ test.c
 
 /src/random.c
 *DS_Store
+*.in
+*.out
+broken_asan_test.c
