@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:59:49 by qho               #+#    #+#             */
-/*   Updated: 2017/04/19 23:33:59 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/20 10:04:21 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,19 @@ wchar_t	*ft_make_wstr(t_flags *flag, wchar_t *str)
 	if (flag->zero)
 		ft_mod_wstr(&ret);
 	return (ret);
+}
+
+void	ft_print_wchar(t_flags *flag, t_data *data, t_format *str)
+{
+	wchar_t	*w_print;
+
+	w_print = NULL;
+	if (data->w_chr == '\0' && flag->minus)
+		ft_putwchar_pf('\0', &str->cnt);
+	w_print = ft_make_wc(flag, data->w_chr, str);
+	ft_putwstr_pf(w_print, &str->cnt);
+	if (data->w_chr == '\0' && !flag->minus)
+		ft_putwchar_pf('\0', &str->cnt);
+	if (w_print)
+		free(w_print);
 }

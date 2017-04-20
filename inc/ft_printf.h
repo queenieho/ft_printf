@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:52:29 by qho               #+#    #+#             */
-/*   Updated: 2017/04/18 18:26:50 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/20 09:48:51 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,6 @@ typedef struct	s_format
 	char		*conv;
 	char		*tmp;
 }				t_format;
-
-void			ft_putchar(char c);
-void			ft_putstr(char const *s);
-void			ft_putnbr(long long nb);
-void			ft_putwchar(wchar_t c);
-void			ft_putwstr(wchar_t *str);
-void			ft_putflags(t_flags flag);
-void			ft_putendl(char const *s);
-void			ft_error(char *str);
 
 void			ft_putchar_pf(char c, int *cnt);
 void			ft_putstr_pf(char const *s, int *cnt);
@@ -148,6 +139,7 @@ void			ft_getllong(t_flags *flag, va_list *arg, t_data *data);
 void			ft_getnumber(t_flags *flag, va_list *arg, t_data *data);
 void			ft_getdata(t_flags *flag, va_list *arg, t_data *data);
 
+void			ft_print_wchar(t_flags *flag, t_data *data, t_format *str);
 void			ft_print_char(t_flags *flag, t_data *data, t_format *str);
 void			ft_print_conv(t_flags *flag, t_data *data, t_format *str);
 void			ft_conversion(va_list *arg, t_flags *flag, t_data *data,

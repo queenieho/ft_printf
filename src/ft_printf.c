@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:56:39 by qho               #+#    #+#             */
-/*   Updated: 2017/04/19 23:35:48 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/20 09:47:46 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void	ft_print_char(t_flags *flag, t_data *data, t_format *str)
 {
 	char	*print;
-	wchar_t	*w_print;
 
 	print = NULL;
-	w_print = NULL;
 	if (flag->conv_i == 9 && flag->lm == 0)
 	{
 		if (data->c == '\0' && flag->minus)
@@ -30,18 +28,9 @@ void	ft_print_char(t_flags *flag, t_data *data, t_format *str)
 	}
 	else if ((flag->conv_i == 10) ||
 		(flag->conv_i == 9 && flag->lm == 3))
-	{
-		if (data->w_chr == '\0' && flag->minus)
-			ft_putwchar_pf('\0', &str->cnt);
-		w_print = ft_make_wc(flag, data->w_chr, str);
-		ft_putwstr_pf(w_print, &str->cnt);
-		if (data->w_chr == '\0' && !flag->minus)
-			ft_putwchar_pf('\0', &str->cnt);
-	}
+		ft_print_wchar(flag, data, str);
 	if (print)
 		free(print);
-	if (w_print)
-		free(w_print);
 }
 
 void	ft_print_conv(t_flags *flag, t_data *data, t_format *str)
@@ -63,7 +52,6 @@ void	ft_print_conv(t_flags *flag, t_data *data, t_format *str)
 		print = ft_make_c(flag, data->c, &str->cnt);
 	else if (flag->conv_i == -1 && flag->conv != '\0')
 		print = ft_make_c(flag, flag->conv, &str->cnt);
-
 	ft_putstr_pf(print, &str->cnt);
 	if (print)
 		free(print);
@@ -143,34 +131,3 @@ int		ft_printf(const char *restrict format, ...)
 	va_end(arg);
 	return (str.cnt);
 }
-
-// int		ft_printf(const char *restrict format, ...)
-// {
-// 	va_list		arg;
-// 	t_flags		*flag;
-// 	t_data		*data;
-// 	t_format	*str;
-
-// 	va_start(arg, format);
-// 	flag = (t_flags*)malloc(sizeof(t_flags));
-// 	data = (t_data*)malloc(sizeof(t_data));
-// 	str = (t_format*)malloc(sizeof(t_format));
-// 	ft_bzero(str, sizeof(t_format));
-// 	ft_bzero(flag, sizeof(t_flags));
-// 	ft_bzero(data, sizeof(t_data));
-// 	str->tmp = (char *)format;
-// 	while (*str->tmp)
-// 	{
-// 		if (*str->tmp != '%')
-// 			ft_putchar_pf(*str->tmp, &str->cnt);
-// 		else
-// 		{
-// 			ft_conversion(&arg, flag, data, str);
-// 			ft_bzero(flag, sizeof(t_flags));
-// 			ft_bzero(data, sizeof(t_data));
-// 		}
-// 		str->tmp++;
-// 	}
-// 	va_end(arg);
-// 	return (str->cnt);
-// }

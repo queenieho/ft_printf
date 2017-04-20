@@ -9,11 +9,9 @@ a.out*
 /obj/**
 
 my_printf
-
 main.c
 test.c
-
-/src/random.c
+random.c
 *DS_Store
 *.in
 *.out
