@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 14:37:16 by qho               #+#    #+#             */
-/*   Updated: 2017/04/18 15:54:55 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/19 23:42:52 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*ft_makepres02(char *str, int j, int pres)
 	char	*ret;
 	int		i;
 
-	ret = (char *)malloc(sizeof(char) * (pres + 1));
+	ret = (char *)malloc(sizeof(char) * (pres + 2));
 	i = pres;
 	ret[i] = '\0';
 	while ((i + 1) && (j + 1))
