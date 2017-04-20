@@ -6,7 +6,7 @@
 /*   By: qho <qho@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 10:56:39 by qho               #+#    #+#             */
-/*   Updated: 2017/04/19 23:18:31 by qho              ###   ########.fr       */
+/*   Updated: 2017/04/19 23:35:48 by qho              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	ft_print_char(t_flags *flag, t_data *data, t_format *str)
 {
 	char	*print;
+	wchar_t	*w_print;
 
 	print = NULL;
+	w_print = NULL;
 	if (flag->conv_i == 9 && flag->lm == 0)
 	{
 		if (data->c == '\0' && flag->minus)
@@ -31,12 +33,15 @@ void	ft_print_char(t_flags *flag, t_data *data, t_format *str)
 	{
 		if (data->w_chr == '\0' && flag->minus)
 			ft_putwchar_pf('\0', &str->cnt);
-		ft_putwstr_pf(ft_make_wc(flag, data->w_chr, str), &str->cnt);
+		w_print = ft_make_wc(flag, data->w_chr, str);
+		ft_putwstr_pf(w_print, &str->cnt);
 		if (data->w_chr == '\0' && !flag->minus)
 			ft_putwchar_pf('\0', &str->cnt);
 	}
 	if (print)
 		free(print);
+	if (w_print)
+		free(w_print);
 }
 
 void	ft_print_conv(t_flags *flag, t_data *data, t_format *str)
